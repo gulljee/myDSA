@@ -1,24 +1,28 @@
 #include <iostream>
 using namespace std;
 
-class Node {
+class Node
+{
 public:
     int data;
-    Node* left;
-    Node* right;
+    Node *left;
+    Node *right;
 
     // Constructor
-    Node(int value) {
+    Node(int value)
+    {
         data = value;
         left = right = nullptr;
     }
 };
 
-class BST {
+class BST
+{
 private:
-    Node* root;
+    Node *root;
 
-    Node* insert(Node* node, int key) {
+    Node *insert(Node *node, int key)
+    {
         if (node == nullptr)
             return new Node(key);
 
@@ -30,28 +34,35 @@ private:
         return node;
     }
 
-    void inorder(Node* node) {
-        if (node == nullptr) return;
+    void inorder(Node *node)
+    {
+        if (node == nullptr)
+            return;
         inorder(node->left);
         cout << node->data << " ";
         inorder(node->right);
     }
 
-    void preorder(Node* node) {
-        if (node == nullptr) return;
+    void preorder(Node *node)
+    {
+        if (node == nullptr)
+            return;
         cout << node->data << " ";
         preorder(node->left);
         preorder(node->right);
     }
 
-    void postorder(Node* node) {
-        if (node == nullptr) return;
+    void postorder(Node *node)
+    {
+        if (node == nullptr)
+            return;
         postorder(node->left);
         postorder(node->right);
         cout << node->data << " ";
     }
 
-    Node* search(Node* node, int key) {
+    Node *search(Node *node, int key)
+    {
         if (node == nullptr || node->data == key)
             return node;
 
@@ -61,13 +72,15 @@ private:
             return search(node->right, key);
     }
 
-    Node* findMin(Node* node) {
+    Node *findMin(Node *node)
+    {
         while (node->left != nullptr)
             node = node->left;
         return node;
     }
 
-    Node* deleteNode(Node* node, int key) {
+    Node *deleteNode(Node *node, int key)
+    {
         if (node == nullptr)
             return node;
 
@@ -75,64 +88,94 @@ private:
             node->left = deleteNode(node->left, key);
         else if (key > node->data)
             node->right = deleteNode(node->right, key);
-        else {
-            if (node->left == nullptr) {
-                Node* temp = node->right;
+        else
+        {
+            if (node->left == nullptr)
+            {
+                Node *temp = node->right;
                 delete node;
                 return temp;
             }
-            else if (node->right == nullptr) {
-                Node* temp = node->left;
+            else if (node->right == nullptr)
+            {
+                Node *temp = node->left;
                 delete node;
                 return temp;
             }
 
-            Node* temp = findMin(node->right);
+            Node *temp = findMin(node->right);
             node->data = temp->data;
             node->right = deleteNode(node->right, temp->data);
         }
         return node;
     }
 
+    bool checkForBST(Node *node)
+    {
+        if (node == nullptr)
+        {
+            return true;
+        }
+        if (node->left != nullptr && node->left->data>node->data)
+        {
+            return false;
+        }
+        if (node->right != nullptr && node->right->data<node->data)
+        {
+            return false;
+        }
+        
+        
+        return checkForBST(node->left) && checkForBST(node->right);
+    }
+
 public:
     // Constructor
-    BST() {
+    BST()
+    {
         root = nullptr;
     }
 
     // Public API
-    void insert(int key) {
+    void insert(int key)
+    {
         root = insert(root, key);
     }
 
-    void inorder() {
+    void inorder()
+    {
         inorder(root);
         cout << endl;
     }
 
-    void preorder() {
+    void preorder()
+    {
         preorder(root);
         cout << endl;
     }
 
-    void postorder() {
+    void postorder()
+    {
         postorder(root);
         cout << endl;
     }
 
-    void search(int key) {
-        Node* result = search(root, key);
+    void search(int key)
+    {
+        Node *result = search(root, key);
         if (result)
             cout << "Element " << key << " found in the tree.\n";
         else
             cout << "Element " << key << " not found in the tree.\n";
     }
 
-    void deleteValue(int key) {
+    void deleteValue(int key)
+    {
         root = deleteNode(root, key);
     }
 };
-int main() {
+int main()
+{
     BST tree;
 
     tree.insert(50);
